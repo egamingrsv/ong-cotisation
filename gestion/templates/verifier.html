@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card shadow p-4">
+    <h3 class="mb-4 text-center">Vérifier votre situation</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="text" name="id_membre" class="form-control" placeholder="Entrez votre ID membre" required>
+        </div>
+        <button class="btn btn-primary w-100">Vérifier</button>
+    </form>
+</div>
+
+{% if info %}
+    <div class="card mt-4 shadow p-4">
+        {% if info == "ID incorrect" %}
+            <div class="alert alert-danger">ID incorrect</div>
+        {% else %}
+            <h4>{{ info.membre.nom }}</h4>
+            <p><strong>Total payé :</strong> {{ info.total }} $</p>
+
+            <h5>Historique :</h5>
+
+<ul class="list-group">
+    {% for c in info.cotisations %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+
+            <div>
+                <strong>{{ c.mois }}</strong><br>
+                {{ c.montant }} $
+            </div>
+
+            <a href="{% url 'recu' c.id %}"
+               target="_blank"
+               class="btn btn-sm btn-success">
+               Télécharger reçu
+            </a>
+
+        </li>
+    {% endfor %}
+</ul>
+        {% endif %}
+    </div>
+{% endif %}
+
+<p><strong>Statut :</strong>
+    {% if info.statut == "À JOUR" %}
+        <span class="badge bg-success">À JOUR</span>
+    {% else %}
+        <span class="badge bg-danger">EN RETARD</span>
+    {% endif %}
+</p>
+
+<p><strong>Solde :</strong> {{ info.solde }} $</p>
+
+
+
+
+{% endblock %}
