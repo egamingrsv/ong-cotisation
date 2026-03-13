@@ -1,0 +1,1 @@
+web: gunicorn ong_cotisation.wsgi
