@@ -4,6 +4,8 @@ from datetime import datetime
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 
+def home(request):
+    return render(request, "home.html")
 
 def verifier_cotisation(request):
     info = None
